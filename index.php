@@ -58,6 +58,7 @@
             <button id="newTask" type="button" class="btn btn-primary btn-lg" style="width:100%;margin-bottom: 5px;" data-toggle="modal" data-target="#myModal">
                 Add Task
             </button>
+
             <div id="TaskList" class="list-group">
                 <!-- Assignment: These are simply dummy tasks to show how it should look and work. You need to dynamically update this list with actual tasks -->
             </div>
@@ -77,27 +78,56 @@
         var modal = $(this);
         if (triggerElement.attr("id") == 'newTask') {
             modal.find('.modal-title').text('New Task');
+
+            $('#InputTaskName').val('');
+            $('#InputTaskDescription').val('');
+
             $('#deleteTask').hide();
             currentTaskId = -1;
         } else {
             modal.find('.modal-title').text('Task details');
+
+            $('#InputTaskName').val(triggerElement.children('h4').text());
+            $('#InputTaskDescription').val(triggerElement.children('p').text());
+
             $('#deleteTask').show();
             currentTaskId = triggerElement.attr("id");
             console.log('Task ID: '+triggerElement.attr("id"));
         }
     });
+
+
     $('#saveTask').click(function() {
-        //Assignment: Implement this functionality
+
+        var data =  {
+            'action': 'save',  
+            'currentTaskId': currentTaskId, 
+            'taskName': $('#InputTaskName').val(), 
+            'taskDescription': $('#InputTaskDescription').val() 
+        };
+
+        $.post("update_task.php", data, function( data ) {});
+       
         alert('Save... Id:'+currentTaskId);
         $('#myModal').modal('hide');
         updateTaskList();
     });
+
+
     $('#deleteTask').click(function() {
         //Assignment: Implement this functionality
+        var data =  {
+            'action': 'delete',
+            'currentTaskId': currentTaskId, 
+        };
+
+        $.post("update_task.php", data, function( data ) {});
+
         alert('Delete... Id:'+currentTaskId);
         $('#myModal').modal('hide');
         updateTaskList();
     });
+
     function updateTaskList() {
         $.post("list_tasks.php", function( data ) {
             $( "#TaskList" ).html( data );
