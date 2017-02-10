@@ -26,13 +26,13 @@
                 <h4 class="modal-title" id="myModalLabel">Modal title</h4>
             </div>
             <div class="modal-body">
-                <form action="update_task.php" method="post">
+                <form action="update_task.php" method="post" id='taskModalForm'>
                     <div class="row">
-                        <div class="col-md-12" style="margin-bottom: 5px;;">
-                            <input id="InputTaskName" type="text" placeholder="Task Name" class="form-control">
+                        <div class="form-group col-md-12" style="margin-bottom: 5px;;">
+                            <input id="InputTaskName" name="InputTaskName" type="text" placeholder="Task Name" class="form-control" required/>
                         </div>
-                        <div class="col-md-12">
-                            <textarea id="InputTaskDescription" placeholder="Description" class="form-control"></textarea>
+                        <div class="form-group col-md-12">
+                            <textarea id="InputTaskDescription" name="InputTaskDescription" placeholder="Description" class="form-control" required/></textarea>
                         </div>
                     </div>
                 </form>
@@ -40,7 +40,7 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button id="deleteTask" type="button" class="btn btn-danger">Delete Task</button>
-                <button id="saveTask" type="button" class="btn btn-primary">Save changes</button>
+                <button id="saveTask" type="submit" class="btn btn-primary">Save changes</button>
             </div>
         </div>
     </div>
@@ -71,7 +71,11 @@
 </body>
 <script type="text/javascript" src="assets/js/jquery-1.12.3.min.js"></script>
 <script type="text/javascript" src="assets/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="assets/js/jquery.validate.min.js"></script>
 <script type="text/javascript">
+
+$(document).ready(function(){
+
     var currentTaskId = -1;
     $('#myModal').on('show.bs.modal', function (event) {
         var triggerElement = $(event.relatedTarget); // Element that triggered the modal
@@ -106,11 +110,16 @@
             'taskDescription': $('#InputTaskDescription').val() 
         };
 
-        $.post("update_task.php", data, function( data ) {});
-       
-        alert('Save... Id:'+currentTaskId);
-        $('#myModal').modal('hide');
-        updateTaskList();
+        var form = $("#taskModalForm");
+
+        if (form.valid()) 
+        {
+            $.post("update_task.php", data, function( data ) {});
+            alert('Save... Id:'+currentTaskId);
+            $('#myModal').modal('hide');
+            updateTaskList();
+        }
+
     });
 
 
@@ -129,10 +138,43 @@
     });
 
     function updateTaskList() {
+        
         $.post("list_tasks.php", function( data ) {
             $( "#TaskList" ).html( data );
         });
     }
     updateTaskList();
+
+    $('#taskModalForm').validate({
+        rules: {
+            InputTaskName: {
+                minlength: 3,
+                maxlength: 50,
+                required: true
+            },
+            InputTaskDescription: {
+                minlength: 3,
+                maxlength: 255
+            }
+        },
+        highlight: function(element) {
+            $(element).closest('.form-group').addClass('has-error');
+        },
+        unhighlight: function(element) {
+            $(element).closest('.form-group').removeClass('has-error');
+        },
+        errorElement: 'span',
+        errorClass: 'help-block',
+        errorPlacement: function(error, element) {
+            if(element.parent('.input-group').length) {
+                error.insertAfter(element.parent());
+            } else {
+                error.insertAfter(element);
+            }
+        }
+    });
+
+
+    });
 </script>
 </html>

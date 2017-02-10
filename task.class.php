@@ -68,15 +68,11 @@ class Task
     protected function LoadFromId($Id = null) 
     {
         if ($Id) {
-
             foreach($this->TaskDataSource as $key => $obj) {
-
                 if($Id == $obj->TaskId) {
-
                     if($this->TaskName) {
                         $obj->TaskName = $this->TaskName;
                     }
-
                     if($this->TaskDescription) {
                         $obj->TaskDescription = $this->TaskDescription;
                     }
@@ -96,9 +92,10 @@ class Task
 
     public function Delete() 
     {
-
+        // var_dump($this->TaskDataSource);
         foreach($this->TaskDataSource as $key => $obj) {
             if($this->TaskId == $obj->TaskId) {
+                // var_dump($obj);
                 unset($this->TaskDataSource[$key]);
             }            
         }
