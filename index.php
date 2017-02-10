@@ -32,7 +32,7 @@
                             <input id="InputTaskName" name="InputTaskName" type="text" placeholder="Task Name" class="form-control" required/>
                         </div>
                         <div class="form-group col-md-12">
-                            <textarea id="InputTaskDescription" name="InputTaskDescription" placeholder="Description" class="form-control" required/></textarea>
+                            <textarea id="InputTaskDescription" name="InputTaskDescription" placeholder="Description" class="form-control" /></textarea>
                         </div>
                     </div>
                 </form>
@@ -151,10 +151,6 @@ $(document).ready(function(){
                 minlength: 3,
                 maxlength: 50,
                 required: true
-            },
-            InputTaskDescription: {
-                minlength: 3,
-                maxlength: 255
             }
         },
         highlight: function(element) {

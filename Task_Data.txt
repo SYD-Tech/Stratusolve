@@ -1,1 +1,1 @@
-{"0":{"TaskId":1,"TaskName":"Test","TaskDescription":"Test"},"1":{"TaskId":"2","TaskName":"Test2","TaskDescription":"Test2"},"3":{"TaskId":4,"TaskName":"dfadfasdf","TaskDescription":"asdfasdfasdf"}}
+[{"TaskId":1,"TaskName":"Test","TaskDescription":"Test"},{"TaskId":"2","TaskName":"Test2","TaskDescription":"Test2"}]
